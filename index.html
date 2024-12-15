@@ -1,51 +1,140 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Geolocation Access</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geolocation Access</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+            background-image: url('bgimage.jpg');
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+            padding: 20px;
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        h1 {
+            color: #c0392b; /* Blood red */
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            box-sizing: border-box;
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        button {
+            background-color: #27ae60; /* Green */
+            color: white;
+            padding: 12px 24px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: fit-content;
+        }
+
+        button:hover {
+            background-color: #2ecc71;
+        }
+
+        #demo {
+            margin-top: 20px;
+            font-weight: bold;
+            color: #3498db; /* Blue */
+        }
+
+        .thank-you {
+            margin-top: 20px;
+            font-style: italic;
+            color: #27ae60;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            width: 100%;
+            margin-top: 20px;
+            box-sizing: border-box;
+        }
+    </style>
 </head>
 <body>
+    <main>
+        <h1>E-Blood Bank Management</h1>
+        <div class="container">
+            <p>You are the NEAREST POTENTIAL DONER to an emergency request in your nearby area. Please grant location access to help SAVE A LIFE!!!</p>
+            <button onclick="getLocation()">Grant Location Access</button>
+            <p id="demo"></p>
+            <p class="thank-you" id="thankYouMessage" style="display: none;">Thank you for your willingness to help!</p>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; Aryan Sharma and Tejal Pundhir, Jaypee Institute of Information Technology, Noida-128</p>
+    </footer>
 
-  <h1>Geolocation Access</h1>
-  <p>You are The nearest doner to an Emergency Request in your nearby Area, Please Grant location access to Help A person save his/her Life.</p>
-  <p>Thankyou!!!</p>
+    <script>
+        const x = document.getElementById("demo");
+        const thankYouMessage = document.getElementById("thankYouMessage");
 
-  <button onclick="getLocation()">Grant Location Access</button>
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition, showError);
+            } else {
+                x.innerHTML = "Geolocation is not supported by this browser.";
+            }
+        }
 
-  <p id="demo"></p>
+        function showPosition(position) {
+            x.innerHTML = "Latitude: " + position.coords.latitude +
+                "<br>Longitude: " + position.coords.longitude;
+            thankYouMessage.style.display = "block";
+        }
 
-  <script>
-    const x = document.getElementById("demo");
-
-    function getLocation() {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(showPosition, showError); 
-      } else { 
-        x.innerHTML = "Geolocation is not supported by this browser.";
-      }
-    }
-
-    function showPosition(position) {
-      x.innerHTML = "Latitude: " + position.coords.latitude + 
-                    "<br>Longitude: " + position.coords.longitude;
-    }
-
-    function showError(error) {
-      switch(error.code) {
-        case error.PERMISSION_DENIED:
-          x.innerHTML = "User denied the request for Geolocation."
-          break;
-        case error.POSITION_UNAVAILABLE:
-          x.innerHTML = "Location information is unavailable."
-          break;
-        case error.TIMEOUT:
-          x.innerHTML = "The request to get user location timed out."
-          break;
-        case error.UNKNOWN_ERROR:
-          x.innerHTML = "An unknown error occurred."
-          break;
-      }
-    }
-  </script>
-
+        function showError(error) {
+            switch (error.code) {
+                case error.PERMISSION_DENIED:
+                    x.innerHTML = "User denied the request for Geolocation.";
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    x.innerHTML = "Location information is unavailable.";
+                    break;
+                case error.TIMEOUT:
+                    x.innerHTML = "The request to get user location timed out.";
+                    break;
+                case error.UNKNOWN_ERROR:
+                    x.innerHTML = "An unknown error occurred.";
+                    break;
+            }
+        }
+    </script>
 </body>
 </html>
